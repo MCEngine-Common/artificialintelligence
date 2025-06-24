@@ -48,6 +48,7 @@ public class MCEngineArtificialIntelligenceCommon {
      * @param plugin The Bukkit plugin instance.
      */
     public MCEngineArtificialIntelligenceCommon(Plugin plugin) {
+        instance = this;
         this.plugin = plugin;
         this.api = new MCEngineArtificialIntelligenceApi();
 
