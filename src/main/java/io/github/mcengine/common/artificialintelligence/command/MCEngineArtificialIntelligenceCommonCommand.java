@@ -1,6 +1,6 @@
 package io.github.mcengine.common.artificialintelligence.command;
 
-import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
+import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
 import io.github.mcengine.api.artificialintelligence.database.IMCEngineArtificialIntelligenceDB;
 import io.github.mcengine.api.mcengine.MCEngineApi;
 import io.github.mcengine.common.artificialintelligence.command.MCEngineArtificialIntelligenceCommonCommandUtil;
@@ -26,7 +26,7 @@ public class MCEngineArtificialIntelligenceCommonCommand implements CommandExecu
      * The main plugin instance used for accessing plugin-specific utilities,
      * such as file operations, configuration, and extension loading.
      */
-    private final MCEngineArtificialIntelligenceApi api;
+    private final MCEngineArtificialIntelligenceCommon api;
 
     /**
      * Database instance used to persist and retrieve player tokens.
@@ -38,9 +38,9 @@ public class MCEngineArtificialIntelligenceCommonCommand implements CommandExecu
      *
      * @param api The MCEngineArtificialIntelligenceApi instance.
      */
-    public MCEngineArtificialIntelligenceCommonCommand(MCEngineArtificialIntelligenceApi api) {
+    public MCEngineArtificialIntelligenceCommonCommand(MCEngineArtificialIntelligenceCommon api, IMCEngineArtificialIntelligenceDB db) {
         this.api = api;
-        this.db = api.getDB();
+        this.db = db;
     }
 
     /**
