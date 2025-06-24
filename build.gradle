@@ -45,19 +45,25 @@ repositories {
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
 
-    maven {
-        url = uri("https://maven.pkg.github.com/MCEngine/core-api")
-        credentials {
-            username = project.user_git_name
-            password = project.user_github_token ?: project.repository_token ?: project.organization_token
+    ext.configureGitHubRepo = { repoName, repoUrl ->
+            maven {
+                name = repoName
+                url = uri(repoUrl)
+                credentials {
+                    username = project.user_git_name
+                    password = project.user_github_token ?: project.repository_token ?: project.organization_token
+                }
+            }
         }
-    }
+
+        configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine/core-api')
+        configureGitHubRepo('MCEngine ArtificialIntelligence API', 'https://maven.pkg.github.com/MCEngine/artificialintelligence-api')
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.21.6-R0.1-SNAPSHOT'
     compileOnly 'io.github.mcengine:core-api:1.0.3-RELEASE'
-    compileOnly 'io.github.mcengine:artificialintelligence-api:1.0.2-RELEASE'
+    compileOnly 'io.github.mcengine:artificialintelligence-api:1.0.4-1-SNAPSHOT'
 }
 
 shadowJar {
