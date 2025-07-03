@@ -212,4 +212,24 @@ public class MCEngineArtificialIntelligenceCommon {
     public boolean checkWaitingPlayer(Player player) {
         return api.checkWaitingPlayer(player);
     }
+
+    /**
+     * Extracts the text content from the AI's full JSON response.
+     *
+     * @param responseJson Full JSON response from the AI API.
+     * @return Plain text message content.
+     */
+    public String getCompletionContent(JsonObject responseJson) {
+        return api.getCompletionContent(responseJson);
+    }
+
+    /**
+     * Extracts the total token usage from the AI's full JSON response.
+     *
+     * @param responseJson Full JSON response from the AI API.
+     * @return Total tokens used, or {@code -1} if unavailable.
+     */
+    public int getTotalTokenUsage(JsonObject responseJson) {
+        return api.getTotalTokenUsage(responseJson);
+    }
 }
