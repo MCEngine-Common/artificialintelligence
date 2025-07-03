@@ -1,5 +1,6 @@
 package io.github.mcengine.common.artificialintelligence;
 
+import com.google.gson.JsonObject;
 import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
 import io.github.mcengine.api.artificialintelligence.database.IMCEngineArtificialIntelligenceDB;
 import io.github.mcengine.api.artificialintelligence.model.IMCEngineArtificialIntelligenceApiModel;
@@ -20,30 +21,35 @@ import java.util.Map;
 public class MCEngineArtificialIntelligenceCommon {
 
     /**
-     * Singleton instance of the API.
+     * Singleton instance of this common AI manager.
      */
     private static MCEngineArtificialIntelligenceCommon instance;
 
     /**
-     * Database handler instance for storing and retrieving player tokens.
+     * Database interface used to persist and retrieve player tokens.
      */
     private final IMCEngineArtificialIntelligenceDB db;
 
     /**
-     * The Bukkit plugin instance associated with this AI API.
+     * The Bukkit plugin associated with this AI integration.
      */
     private final Plugin plugin;
 
     /**
-     * Instance of the main AI API handler.
+     * Instance of the MCEngine AI API handler.
      */
     private final MCEngineArtificialIntelligenceApi api;
 
     /**
      * Constructs a new AI Common handler.
-     * Initializes the appropriate database backend and prepares the environment for model registration and AI tasks.
+     * Initializes the appropriate database backend and prepares model registration.
      *
-     * Supported database types (config key: {@code database.type}): {@code sqlite}, {@code mysql}, {@code postgresql}.
+     * Supported database types (config key: {@code database.type}):
+     * <ul>
+     *     <li>{@code sqlite}</li>
+     *     <li>{@code mysql}</li>
+     *     <li>{@code postgresql}</li>
+     * </ul>
      *
      * @param plugin The Bukkit plugin instance.
      */
@@ -62,146 +68,146 @@ public class MCEngineArtificialIntelligenceCommon {
     }
 
     /**
-     * Returns the global API singleton instance.
+     * Returns the global singleton instance.
      *
-     * @return The {@link MCEngineArtificialIntelligenceCommon} instance.
+     * @return Singleton instance of {@link MCEngineArtificialIntelligenceCommon}.
      */
     public static MCEngineArtificialIntelligenceCommon getApi() {
         return instance;
     }
 
     /**
-     * Returns the Bukkit plugin instance linked to this API.
+     * Gets the associated plugin instance.
      *
-     * @return The plugin instance.
+     * @return The Bukkit plugin.
      */
     public Plugin getPlugin() {
         return plugin;
     }
 
     /**
-     * Returns the database handler implementation.
+     * Gets the database handler implementation.
      *
-     * @return The database API implementation.
+     * @return The database interface.
      */
     public IMCEngineArtificialIntelligenceDB getDB() {
         return db;
     }
 
     /**
-     * Retrieves the active database connection used by the AI plugin.
+     * Retrieves the active SQL database connection.
      *
-     * @return The {@link Connection} instance for the configured database.
+     * @return JDBC {@link Connection} used by the plugin.
      */
     public Connection getDBConnection() {
         return db.getDBConnection();
     }
 
     /**
-     * Stores or updates a player's API token for a given AI platform.
+     * Stores or updates a player's API token for a platform.
      *
-     * @param playerUuid The UUID of the player.
-     * @param platform   The AI platform (e.g., {@code openai}).
-     * @param token      The raw API token to store.
+     * @param playerUuid UUID of the player as a string.
+     * @param platform   Platform name (e.g., {@code openai}).
+     * @param token      API token to store.
      */
     public void setPlayerToken(String playerUuid, String platform, String token) {
         db.setPlayerToken(playerUuid, platform, token);
     }
 
     /**
-     * Retrieves the stored token for a given player and platform.
+     * Retrieves a stored token for a given player and platform.
      *
-     * @param playerUuid The UUID of the player.
-     * @param platform   The AI platform name.
-     * @return The stored token, or {@code null} if none exists.
+     * @param playerUuid UUID of the player as a string.
+     * @param platform   Platform name.
+     * @return Token string or {@code null} if not found.
      */
     public String getPlayerToken(String playerUuid, String platform) {
         return db.getPlayerToken(playerUuid, platform);
     }
 
     /**
-     * Registers a model under the specified platform.
+     * Registers an AI model under the specified platform.
      *
      * @param platform The platform name (e.g., {@code openai}, {@code customurl}).
-     * @param model    The model identifier (e.g., {@code gpt-4}, {@code server:my-custom-model}).
+     * @param model    The model name or alias.
      */
     public void registerModel(String platform, String model) {
         api.registerModel(plugin, platform, model);
     }
 
     /**
-     * Retrieves an AI model instance by platform and model name.
+     * Retrieves an AI model by platform and model name.
      *
      * @param platform The platform name.
      * @param model    The model name.
-     * @return The model interface, or {@code null} if not registered.
+     * @return Registered model instance.
      */
     public IMCEngineArtificialIntelligenceApiModel getAi(String platform, String model) {
         return api.getAi(platform, model);
     }
 
     /**
-     * Returns all registered AI models grouped by platform and model name.
+     * Gets all registered AI models grouped by platform.
      *
-     * @return A nested map: platform → model → model instance.
+     * @return Nested map of platform → model → model instance.
      */
     public Map<String, Map<String, IMCEngineArtificialIntelligenceApiModel>> getAiAll() {
         return api.getAiAll();
     }
 
     /**
-     * Gets a direct response from a registered AI model.
+     * Sends a direct request to a model using the default configured token.
      *
-     * @param platform The AI platform.
+     * @param platform The AI platform name.
      * @param model    The model name.
-     * @param message  The prompt message to send.
-     * @return The AI-generated response.
+     * @param message  Prompt to send to the AI.
+     * @return The full JSON response object from the AI.
      */
-    public String getResponse(String platform, String model, String message) {
+    public JsonObject getResponse(String platform, String model, String message) {
         return api.getResponse(platform, model, message);
     }
 
     /**
-     * Gets a direct response from an AI model using a specific API token.
+     * Sends a direct request to a model using a custom token.
      *
-     * @param platform The AI platform.
+     * @param platform The AI platform name.
      * @param model    The model name.
-     * @param token    The API token to use.
-     * @param message  The prompt message.
-     * @return The AI-generated response.
+     * @param token    API token.
+     * @param message  Prompt to send to the AI.
+     * @return The full JSON response object from the AI.
      */
-    public String getResponse(String platform, String model, String token, String message) {
+    public JsonObject getResponse(String platform, String model, String token, String message) {
         return api.getResponse(platform, model, token, message);
     }
 
     /**
-     * Executes an AI bot task asynchronously with the given input and context.
+     * Starts a bot task for a player asynchronously using either a server or player token.
      *
-     * @param player    The player who initiated the task.
-     * @param tokenType The type of token to use: {@code "server"} or {@code "player"}.
-     * @param platform  The AI platform name.
-     * @param model     The AI model name.
-     * @param message   The prompt message.
+     * @param player    Player initiating the request.
+     * @param tokenType Token type: {@code "server"} or {@code "player"}.
+     * @param platform  AI platform name.
+     * @param model     AI model name.
+     * @param message   Prompt message.
      */
     public void runBotTask(Player player, String tokenType, String platform, String model, String message) {
         api.runBotTask(plugin, db, player, tokenType, platform, model, message);
     }
 
     /**
-     * Sets the waiting status of a player during AI interaction.
+     * Marks a player as waiting for a response.
      *
-     * @param player  The player.
-     * @param waiting {@code true} if the player is waiting for a response; otherwise {@code false}.
+     * @param player  Player instance.
+     * @param waiting Whether the player is waiting.
      */
     public void setWaiting(Player player, boolean waiting) {
         api.setWaiting(player, waiting);
     }
 
     /**
-     * Checks whether a player is currently waiting for an AI response.
+     * Checks if a player is currently marked as waiting.
      *
-     * @param player The player to check.
-     * @return {@code true} if waiting; otherwise {@code false}.
+     * @param player Player to check.
+     * @return {@code true} if waiting; {@code false} otherwise.
      */
     public boolean checkWaitingPlayer(Player player) {
         return api.checkWaitingPlayer(player);
