@@ -1,7 +1,7 @@
-package io.github.mcengine.common.artificialintelligence.command;
+package io.github.mcengine.common.artificialintelligence.util;
 
 import io.github.mcengine.api.artificialintelligence.util.MCEngineArtificialIntelligenceApiUtilAi;
-import io.github.mcengine.api.mcengine.util.MCEngineApiUtilExtension;
+import io.github.mcengine.api.core.util.MCEngineApiUtilExtension;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Utility class for AI command logic extracted from MCEngineArtificialIntelligenceCommonCommand.
  */
-public class MCEngineArtificialIntelligenceCommonCommandUtil {
+public class MCEngineArtificialIntelligenceCommandUtil {
 
     /**
      * Displays all registered AI models by platform to the player.
@@ -54,7 +54,7 @@ public class MCEngineArtificialIntelligenceCommonCommandUtil {
 
             } else {
                 modelMap.keySet().stream()
-                        .filter(MCEngineArtificialIntelligenceCommonCommandUtil::isValidKey)
+                        .filter(MCEngineArtificialIntelligenceCommandUtil::isValidKey)
                         .sorted()
                         .forEach(modelName -> player.sendMessage("  §7- §f" + modelName));
             }
@@ -96,7 +96,7 @@ public class MCEngineArtificialIntelligenceCommonCommandUtil {
             }
         } else {
             modelMap.keySet().stream()
-                    .filter(MCEngineArtificialIntelligenceCommonCommandUtil::isValidKey)
+                    .filter(MCEngineArtificialIntelligenceCommandUtil::isValidKey)
                     .sorted()
                     .forEach(modelName -> player.sendMessage("  §7- §f" + modelName));
         }
@@ -125,7 +125,7 @@ public class MCEngineArtificialIntelligenceCommonCommandUtil {
 
                 List<String> servers = entry.keySet().stream()
                         .map(key -> key.split(":", 2)[0])
-                        .filter(MCEngineArtificialIntelligenceCommonCommandUtil::isValidKey)
+                        .filter(MCEngineArtificialIntelligenceCommandUtil::isValidKey)
                         .distinct()
                         .sorted()
                         .collect(Collectors.toList());

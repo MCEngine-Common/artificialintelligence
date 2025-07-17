@@ -2,8 +2,8 @@ package io.github.mcengine.common.artificialintelligence.command;
 
 import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
 import io.github.mcengine.api.artificialintelligence.database.IMCEngineArtificialIntelligenceDB;
-import io.github.mcengine.api.mcengine.MCEngineApi;
-import io.github.mcengine.common.artificialintelligence.command.MCEngineArtificialIntelligenceCommonCommandUtil;
+import io.github.mcengine.api.core.MCEngineApi;
+import io.github.mcengine.common.artificialintelligence.util.MCEngineArtificialIntelligenceCommandUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -60,7 +60,7 @@ public class MCEngineArtificialIntelligenceCommonCommand implements CommandExecu
         }
 
         if (args.length < 3) {
-            MCEngineArtificialIntelligenceCommonCommandUtil.sendUsage(sender);
+            MCEngineArtificialIntelligenceCommandUtil.sendUsage(sender);
             return true;
         }
 
@@ -81,17 +81,17 @@ public class MCEngineArtificialIntelligenceCommonCommand implements CommandExecu
             case "get":
                 if ("platform".equals(target)) {
                     if ("list".equalsIgnoreCase(args[2]) && args.length == 3) {
-                        return MCEngineArtificialIntelligenceCommonCommandUtil.handlePlatformList(player);
+                        return MCEngineArtificialIntelligenceCommandUtil.handlePlatformList(player);
                     }
 
                     if (args.length == 4 && "model".equalsIgnoreCase(args[2]) && "list".equalsIgnoreCase(args[3])) {
-                        return MCEngineArtificialIntelligenceCommonCommandUtil.handleModelList(player);
+                        return MCEngineArtificialIntelligenceCommandUtil.handleModelList(player);
                     }
 
-                    if (args.length == 5 && MCEngineArtificialIntelligenceCommonCommandUtil.isValidKey(args[2])
+                    if (args.length == 5 && MCEngineArtificialIntelligenceCommandUtil.isValidKey(args[2])
                             && "model".equalsIgnoreCase(args[3])
                             && "list".equalsIgnoreCase(args[4])) {
-                        return MCEngineArtificialIntelligenceCommonCommandUtil.handleModelListByPlatform(player, args[2]);
+                        return MCEngineArtificialIntelligenceCommandUtil.handleModelListByPlatform(player, args[2]);
                     }
                 }
 
@@ -102,7 +102,7 @@ public class MCEngineArtificialIntelligenceCommonCommand implements CommandExecu
                 break;
         }
 
-        MCEngineArtificialIntelligenceCommonCommandUtil.sendUsage(sender);
+        MCEngineArtificialIntelligenceCommandUtil.sendUsage(sender);
         return true;
     }
 }
