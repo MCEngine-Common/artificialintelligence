@@ -62,8 +62,8 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.21.7-R0.1-SNAPSHOT'
-    compileOnly 'io.github.mcengine:core-api:2025.0.7-17-1'
-    compileOnly 'io.github.mcengine:artificialintelligence-api:2025.0.7-17-1'
+    compileOnly 'io.github.mcengine:core-api:2025.0.7-19-1'
+    compileOnly 'io.github.mcengine:artificialintelligence-api:2025.0.7-19-1'
 }
 
 shadowJar {
