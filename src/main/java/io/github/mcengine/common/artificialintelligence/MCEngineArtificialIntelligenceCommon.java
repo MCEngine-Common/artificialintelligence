@@ -156,28 +156,30 @@ public class MCEngineArtificialIntelligenceCommon {
     }
 
     /**
-     * Sends a direct request to a model using the default configured token.
+     * Sends a direct request to a model using the default configured token and a system prompt.
      *
-     * @param platform The AI platform name.
-     * @param model    The model name.
-     * @param message  Prompt to send to the AI.
+     * @param platform     The AI platform name.
+     * @param model        The model name.
+     * @param systemPrompt The system prompt providing context or behavior instructions.
+     * @param message      Prompt to send to the AI.
      * @return The full JSON response object from the AI.
      */
-    public JsonObject getResponse(String platform, String model, String message) {
-        return api.getResponse(platform, model, message);
+    public JsonObject getResponse(String platform, String model, String systemPrompt, String message) {
+        return api.getResponse(platform, model, systemPrompt, message);
     }
 
     /**
-     * Sends a direct request to a model using a custom token.
+     * Sends a direct request to a model using a custom token and a system prompt.
      *
-     * @param platform The AI platform name.
-     * @param model    The model name.
-     * @param token    API token.
-     * @param message  Prompt to send to the AI.
+     * @param platform     The AI platform name.
+     * @param model        The model name.
+     * @param token        API token.
+     * @param systemPrompt The system prompt providing context or behavior instructions.
+     * @param message      Prompt to send to the AI.
      * @return The full JSON response object from the AI.
      */
-    public JsonObject getResponse(String platform, String model, String token, String message) {
-        return api.getResponse(platform, model, token, message);
+    public JsonObject getResponse(String platform, String model, String token, String systemPrompt, String message) {
+        return api.getResponse(platform, model, token, systemPrompt, message);
     }
 
     /**
