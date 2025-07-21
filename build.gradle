@@ -58,8 +58,8 @@ repositories {
             }
         }
 
-        configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine/core-api')
-        configureGitHubRepo('MCEngine ArtificialIntelligence API', 'https://maven.pkg.github.com/MCEngine/artificialintelligence-api')
+        configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine-API/core')
+        configureGitHubRepo('MCEngine ArtificialIntelligence API', 'https://maven.pkg.github.com/MCEngine-API/artificialintelligence')
 }
 
 dependencies {
