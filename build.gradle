@@ -4,8 +4,8 @@ plugins {
     id 'maven-publish'
 }
 
-// Set project version using a property, defaulting to 'undefined' if not found
-version = project.properties[project.name + '.version'] ?: 'undefined'
+// Set project version using a property
+version = project.properties[project.name + '.version']
 group = 'io.github.mcengine'
 
 ext {
@@ -14,11 +14,13 @@ ext {
     user_github_token = System.getenv('USER_GITHUB_TOKEN')
 
     // Organization
-    organization_name = System.getenv('ORGANIZATION_NAME') ?: 'MCEngine'
+    organization_id = System.getenv('ORGANIZATION_ID')
+    organization_name = System.getenv('ORGANIZATION_NAME') ?: 'MCEngine-Common'
     organization_token = System.getenv('ORGANIZATION_TOKEN')
 
     // Repository
-    repository_name = System.getenv('REPOSITORY_NAME') ?: 'artificialintelligence-common'
+    repository_id = System.getenv('REPOSITORY_ID')
+    repository_name = System.getenv('REPOSITORY_NAME') ?: 'artificialintelligence'
     repository_token = System.getenv('REPOSITORY_TOKEN')
 
     // Project Information
