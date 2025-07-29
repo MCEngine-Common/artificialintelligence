@@ -2,7 +2,7 @@ package io.github.mcengine.common.artificialintelligence.command;
 
 import io.github.mcengine.common.artificialintelligence.MCEngineArtificialIntelligenceCommon;
 import io.github.mcengine.api.artificialintelligence.database.IMCEngineArtificialIntelligenceDB;
-import io.github.mcengine.api.core.MCEngineApi;
+import io.github.mcengine.api.core.MCEngineCoreApi;
 import io.github.mcengine.common.artificialintelligence.util.MCEngineArtificialIntelligenceCommandUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -97,7 +97,7 @@ public class MCEngineArtificialIntelligenceCommonCommand implements CommandExecu
 
                 if (args.length == 3 && "list".equalsIgnoreCase(args[2])
                         && ("addon".equals(target) || "dlc".equals(target))) {
-                    return MCEngineApi.handleExtensionList(player, api.getPlugin(), target);
+                    return MCEngineCoreApi.handleExtensionList(player, api.getPlugin(), target);
                 }
                 break;
         }

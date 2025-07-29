@@ -1,7 +1,6 @@
 package io.github.mcengine.common.artificialintelligence.util;
 
 import io.github.mcengine.api.artificialintelligence.util.MCEngineArtificialIntelligenceApiUtilAi;
-import io.github.mcengine.api.core.util.MCEngineApiUtilExtension;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
