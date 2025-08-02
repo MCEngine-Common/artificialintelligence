@@ -28,6 +28,20 @@ ext {
 }
 
 repositories {
+    ext.configureGitHubRepo = { repoName, repoUrl ->
+        maven {
+            name = repoName
+            url = uri(repoUrl)
+            credentials {
+                username = project.user_git_name
+                password = project.user_github_token ?: project.repository_token ?: project.organization_token
+            }
+        }
+    }
+
+    configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine-API/core')
+    configureGitHubRepo('MCEngine ArtificialIntelligence API', 'https://maven.pkg.github.com/MCEngine-API/artificialintelligence')
+
     mavenCentral()
     mavenLocal()
 
@@ -46,20 +60,6 @@ repositories {
 
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
-
-    ext.configureGitHubRepo = { repoName, repoUrl ->
-        maven {
-            name = repoName
-            url = uri(repoUrl)
-            credentials {
-                username = project.user_git_name
-                password = project.user_github_token ?: project.repository_token ?: project.organization_token
-            }
-        }
-    }
-
-    configureGitHubRepo('MCEngine Core API', 'https://maven.pkg.github.com/MCEngine-API/core')
-    configureGitHubRepo('MCEngine ArtificialIntelligence API', 'https://maven.pkg.github.com/MCEngine-API/artificialintelligence')
 }
 
 dependencies {
