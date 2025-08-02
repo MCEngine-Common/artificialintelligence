@@ -13,6 +13,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.sql.Connection;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Common logic handler for the MCEngine Artificial Intelligence plugin.
@@ -42,7 +43,7 @@ public class MCEngineArtificialIntelligenceCommon {
 
     /**
      * Constructs a new AI Common handler.
-     * Initializes the appropriate database backend and prepares model registration.
+     * Initializes the appropriate database backend, function loader, and prepares model registration.
      *
      * Supported database types (config key: {@code database.type}):
      * <ul>
@@ -65,6 +66,11 @@ public class MCEngineArtificialIntelligenceCommon {
             case "postgresql" -> this.db = new MCEngineArtificialIntelligencePostgreSQL(plugin);
             default -> throw new IllegalArgumentException("Unsupported database type: " + dbType);
         }
+
+        // Initialize function calling loader using configured folder and default logger
+        String folderPath = plugin.getConfig().getString("function-calling.folder", "function-calling");
+        Logger logger = plugin.getLogger();
+        api.initializeFunctionCallingLoader(plugin, folderPath, logger);
     }
 
     /**
@@ -244,5 +250,15 @@ public class MCEngineArtificialIntelligenceCommon {
      */
     public String getMessageMatch(Player player, String msg) {
         return api.getMessageMatch(player, msg);
+    }
+
+    /**
+     * Initializes the function-calling rule loader for chatbot behavior matching.
+     *
+     * @param folderPath Path to the rules directory (relative to plugin data folder).
+     * @param logger     Logger for diagnostic output.
+     */
+    public void initializeFunctionCallingLoader(String folderPath, Logger logger) {
+        api.initializeFunctionCallingLoader(plugin, folderPath, logger);
     }
 }
