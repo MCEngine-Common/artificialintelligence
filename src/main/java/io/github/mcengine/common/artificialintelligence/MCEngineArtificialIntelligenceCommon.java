@@ -234,4 +234,15 @@ public class MCEngineArtificialIntelligenceCommon {
     public int getTotalTokenUsage(JsonObject responseJson) {
         return api.getTotalTokenUsage(responseJson);
     }
+
+    /**
+     * Matches a player message against predefined rule-based functions and returns the first response match.
+     *
+     * @param player The player who sent the message.
+     * @param msg    The message content to match.
+     * @return A resolved response string, or {@code null} if no match is found.
+     */
+    public String getMessageMatch(Player player, String msg) {
+        return api.getMessageMatch(player, msg);
+    }
 }
