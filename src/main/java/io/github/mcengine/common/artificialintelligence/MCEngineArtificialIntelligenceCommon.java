@@ -68,7 +68,7 @@ public class MCEngineArtificialIntelligenceCommon {
         }
 
         // Initialize function calling loader using configured folder and default logger
-        String folderPath = plugin.getConfig().getString("function-calling.folder", "function-calling");
+        String folderPath = plugin.getConfig().getString("function-calling.path", "function-calling");
         Logger logger = plugin.getLogger();
         api.initializeFunctionCallingLoader(plugin, folderPath, logger);
     }
