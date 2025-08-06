@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
 import io.github.mcengine.api.artificialintelligence.database.IMCEngineArtificialIntelligenceDB;
 import io.github.mcengine.api.artificialintelligence.model.IMCEngineArtificialIntelligenceApiModel;
-import io.github.mcengine.api.core.util.MCEngineApiCoreDispatcher;
+import io.github.mcengine.api.core.util.MCEngineCoreApiDispatcher;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
