@@ -4,10 +4,12 @@ import com.google.gson.JsonObject;
 import io.github.mcengine.api.artificialintelligence.MCEngineArtificialIntelligenceApi;
 import io.github.mcengine.api.artificialintelligence.database.IMCEngineArtificialIntelligenceDB;
 import io.github.mcengine.api.artificialintelligence.model.IMCEngineArtificialIntelligenceApiModel;
+import io.github.mcengine.api.core.util.MCEngineCoreApiDispatcher;
 import io.github.mcengine.common.artificialintelligence.database.mysql.MCEngineArtificialIntelligenceMySQL;
 import io.github.mcengine.common.artificialintelligence.database.postgresql.MCEngineArtificialIntelligencePostgreSQL;
 import io.github.mcengine.common.artificialintelligence.database.sqlite.MCEngineArtificialIntelligenceSQLite;
-
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -42,6 +44,11 @@ public class MCEngineArtificialIntelligenceCommon {
     private final MCEngineArtificialIntelligenceApi api;
 
     /**
+     * Internal command dispatcher used for registering command namespaces and subcommands.
+     */
+    private final MCEngineCoreApiDispatcher dispatcher;
+
+    /**
      * Constructs a new AI Common handler.
      * Initializes the appropriate database backend, function loader, and prepares model registration.
      *
@@ -58,6 +65,7 @@ public class MCEngineArtificialIntelligenceCommon {
         instance = this;
         this.plugin = plugin;
         this.api = new MCEngineArtificialIntelligenceApi();
+        this.dispatcher = new MCEngineCoreApiDispatcher();
 
         String dbType = plugin.getConfig().getString("database.type", "sqlite").toLowerCase();
         switch (dbType) {
@@ -107,6 +115,57 @@ public class MCEngineArtificialIntelligenceCommon {
      */
     public Connection getDBConnection() {
         return db.getDBConnection();
+    }
+
+    /**
+     * Registers a command namespace (e.g. "plugin1") for this plugin's dispatcher.
+     *
+     * @param namespace unique namespace for commands
+     */
+    public void registerNamespace(String namespace) {
+        dispatcher.registerNamespace(namespace);
+    }
+
+    /**
+     * Binds a Bukkit command (like /example1) to the internal dispatcher.
+     *
+     * @param namespace       the command namespace
+     * @param commandExecutor fallback executor
+     */
+    public void bindNamespaceToCommand(String namespace, CommandExecutor commandExecutor) {
+        dispatcher.bindNamespaceToCommand(namespace, commandExecutor);
+    }
+
+    /**
+     * Registers a subcommand under the specified namespace.
+     *
+     * @param namespace the command namespace
+     * @param name      subcommand label
+     * @param executor  subcommand logic
+     */
+    public void registerSubCommand(String namespace, String name, CommandExecutor executor) {
+        dispatcher.registerSubCommand(namespace, name, executor);
+    }
+
+    /**
+     * Registers a tab completer for a subcommand under the specified namespace.
+     *
+     * @param namespace    the command namespace
+     * @param subcommand   subcommand label
+     * @param tabCompleter tab completion logic
+     */
+    public void registerSubTabCompleter(String namespace, String subcommand, TabCompleter tabCompleter) {
+        dispatcher.registerSubTabCompleter(namespace, subcommand, tabCompleter);
+    }
+
+    /**
+     * Gets the dispatcher instance to assign as command executor and tab completer.
+     *
+     * @param namespace command namespace
+     * @return command executor for Bukkit command registration
+     */
+    public CommandExecutor getDispatcher(String namespace) {
+        return dispatcher.getDispatcher(namespace);
     }
 
     /**
