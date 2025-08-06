@@ -43,7 +43,7 @@ public class MCEngineArtificialIntelligenceCommon {
     /**
      * Internal command dispatcher used for registering command namespaces and subcommands.
      */
-    private final MCEngineDispatcher dispatcher;
+    private final MCEngineCoreApiDispatcher dispatcher;
 
     /**
      * Constructs a new AI Common handler.
@@ -62,7 +62,7 @@ public class MCEngineArtificialIntelligenceCommon {
         instance = this;
         this.plugin = plugin;
         this.api = new MCEngineArtificialIntelligenceApi();
-        this.dispatcher = new MCEngineDispatcher();
+        this.dispatcher = new MCEngineCoreApiDispatcher();
 
         String dbType = plugin.getConfig().getString("database.type", "sqlite").toLowerCase();
         switch (dbType) {
