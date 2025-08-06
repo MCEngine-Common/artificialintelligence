@@ -11,14 +11,18 @@ import org.bukkit.plugin.Plugin;
 import java.util.*;
 
 /**
- * Tab completer for AI commands.
+ * Tab completer for the "/ai default" dispatcher command.
+ * <p>
  * Supports auto-completion for:
- * - /ai set token {platform} <token>
- * - /ai get platform list
- * - /ai get platform model list
- * - /ai get platform {platform} model list
- * - /ai get addon list
- * - /ai get dlc list
+ * <ul>
+ *     <li>/ai default set token {platform} &lt;token&gt;</li>
+ *     <li>/ai default get platform list</li>
+ *     <li>/ai default get platform model list</li>
+ *     <li>/ai default get platform {platform} model list</li>
+ *     <li>/ai default get addon list</li>
+ *     <li>/ai default get dlc list</li>
+ * </ul>
+ * This is registered via the dispatcher under the "ai" namespace and "default" subcommand.
  */
 public class MCEngineArtificialIntelligenceCommonTabCompleter implements TabCompleter {
 
@@ -28,31 +32,32 @@ public class MCEngineArtificialIntelligenceCommonTabCompleter implements TabComp
     private final Plugin plugin;
 
     /**
-     * Top-level command keywords available at /ai <first>.
+     * Top-level command keywords available at /ai default <first>.
      * Includes: "set" and "get".
      */
     private static final List<String> FIRST = Arrays.asList("set", "get");
 
     /**
      * Second-level keywords after "set".
-     * Used for: /ai set <second>.
+     * Used for: /ai default set <second>.
      * Includes: "token".
      */
     private static final List<String> SECOND_SET = Arrays.asList("token");
 
     /**
      * Second-level keywords after "get".
-     * Used for: /ai get <second>.
+     * Used for: /ai default get <second>.
      * Includes: "platform", "addon", "dlc".
      */
     private static final List<String> SECOND_GET = Arrays.asList("platform", "addon", "dlc");
 
     /**
      * Third-level keywords for listing models.
-     * Used for: /ai get model <third>.
+     * Used for: /ai default get model <third>.
      * Includes: "list".
      */
     private static final List<String> LIST_KEYWORD = Arrays.asList("list");
+
     /**
      * Supported AI platform identifiers used when setting tokens.
      */
@@ -68,13 +73,13 @@ public class MCEngineArtificialIntelligenceCommonTabCompleter implements TabComp
     }
 
     /**
-     * Handles tab completion for /ai commands.
+     * Handles tab completion for the "/ai default" subcommand under the dispatcher.
      *
      * @param sender  The source of the command.
      * @param command The command being executed.
      * @param alias   The alias used.
      * @param args    The command arguments.
-     * @return A list of tab completion suggestions.
+     * @return A list of tab completion suggestions, or null if none.
      */
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
@@ -148,7 +153,7 @@ public class MCEngineArtificialIntelligenceCommonTabCompleter implements TabComp
 
     /**
      * Retrieves all registered platforms for model listing.
-     * Used for: /ai get {platform} model list
+     * Used for: /ai default get {platform} model list
      *
      * @return A list of valid platform identifiers.
      */
