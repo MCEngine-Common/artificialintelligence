@@ -12,10 +12,10 @@ import java.sql.*;
  */
 public class MCEngineArtificialIntelligencePostgreSQL implements IMCEngineArtificialIntelligenceDB {
 
-    /** The Bukkit plugin instance. */
+    /** The Bukkit plugin instance used for configuration and logging. */
     private final Plugin plugin;
 
-    /** Persistent PostgreSQL connection. */
+    /** Persistent PostgreSQL connection established from plugin configuration. */
     private final Connection conn;
 
     /**
@@ -69,23 +69,51 @@ public class MCEngineArtificialIntelligencePostgreSQL implements IMCEngineArtifi
         }
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void executeQuery(String query) {
+        try (Statement st = conn.createStatement()) {
+            st.execute(query);
+        } catch (SQLException e) {
+            plugin.getLogger().warning("PostgreSQL AI executeQuery failed: " + e.getMessage());
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getValue(String query, Class<T> type) {
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(query)) {
+            if (rs.next()) {
+                Object v;
+                if (type == String.class) v = rs.getString(1);
+                else if (type == Integer.class) v = rs.getInt(1);
+                else if (type == Long.class) v = rs.getLong(1);
+                else if (type == Double.class) v = rs.getDouble(1);
+                else if (type == Boolean.class) v = rs.getBoolean(1);
+                else throw new IllegalArgumentException("Unsupported return type: " + type);
+                return (T) v;
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().warning("PostgreSQL AI getValue failed: " + e.getMessage());
+        }
+        return null;
+    }
+
     /**
      * Returns the current PostgreSQL database connection.
      *
      * @return Active {@link Connection} to the PostgreSQL database.
+     * @deprecated Direct connection access has been removed from the public interface. Use
+     *             {@link #executeQuery(String)} and {@link #getValue(String, Class)} instead.
      */
-    @Override
-    public Connection getDBConnection() {
+    @Deprecated
+    public Connection getDBConnectionLegacy() {
         return conn;
     }
 
-    /**
-     * Stores or updates the encrypted token for a player and platform.
-     *
-     * @param playerUuid The UUID of the player.
-     * @param platform   The AI platform.
-     * @param token      The raw token to encrypt and save.
-     */
+    /** {@inheritDoc} */
     @Override
     public void setPlayerToken(String playerUuid, String platform, String token) {
         String encryptedToken = MCEngineArtificialIntelligenceApiUtilToken.encryptToken(token);
@@ -107,13 +135,7 @@ public class MCEngineArtificialIntelligencePostgreSQL implements IMCEngineArtifi
         }
     }
 
-    /**
-     * Retrieves the encrypted token for a player and platform.
-     *
-     * @param playerUuid The UUID of the player.
-     * @param platform   The platform name.
-     * @return The token string, or null if not found.
-     */
+    /** {@inheritDoc} */
     @Override
     public String getPlayerToken(String playerUuid, String platform) {
         String sql = "SELECT token FROM artificialintelligence WHERE player_uuid = ? AND platform = ?";
